@@ -10,6 +10,7 @@
 #  - Install puppetmaster/mod_passenger packages
 #  - Configure puppet.conf
 #  - Set reports directory permissions
+#  - Configure hiera
 #
 # == Authors:
 #  - Andrew Leonard <andy.leonard@sbri.org>
@@ -51,4 +52,16 @@ class puppetmaster {
     require => Package['puppetmaster-passenger'],
   }
   
+  # Configure hiera:
+
+  file { '/etc/hiera.yaml':
+    ensure => present,
+    content => template('puppetmaster/hiera.yaml.erb'),
+  }
+
+  file { '/etc/puppet/hiera.yaml':
+    ensure => link,
+    target => '/etc/hiera.yaml',
+  }
+
 }

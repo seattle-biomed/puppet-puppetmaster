@@ -20,8 +20,7 @@
 #
 # == Sample Usage:
 #
-# puppet apply --modulepath=~/.puppet/modules puppetmaster.pp \
-#  -e "include puppetmaster"
+# puppet apply --modulepath=~/.puppet/modules -e "include puppetmaster"
 #
 # == Copyright:
 #

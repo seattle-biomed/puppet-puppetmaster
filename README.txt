@@ -5,6 +5,7 @@ A puppet module to bootstrap a puppetmaster; written to be run from
 
 Example usage:
 
-> /usr/bin/puppet module install cprice404-inifile
-> /usr/bin/sudo /usr/bin/puppet apply --modulepath=~/.puppet/modules \
-    puppetmaster.pp -e "include puppetmaster"
+> puppet module install cprice404-inifile
+> git clone https://github.com/seattle-biomed/sbri-puppetmaster.git
+> mv sbri-puppetmaster ~/.puppet/modules
+> sudo puppet apply --modulepath=~/.puppet/modules -e "include puppetmaster"

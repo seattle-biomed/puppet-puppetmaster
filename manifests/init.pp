@@ -54,7 +54,7 @@ class puppetmaster {
   # Configure hiera:
 
   file { '/etc/hiera.yaml':
-    ensure => present,
+    ensure  => present,
     content => template('puppetmaster/hiera.yaml.erb'),
   }
 

@@ -4,7 +4,8 @@
 #
 # Written with the intent of being run from puppet apply.
 #
-# == Parameters: (none)
+# == Parameters:
+#  - master_name - hostname of puppetmaster, for puppet.conf
 #
 # == Actions:
 #  - Install puppetmaster/mod_passenger packages
@@ -26,7 +27,7 @@
 #
 # Copyright Seattle Biomedical Research Institute, 2012
 #
-class puppetmaster {
+class puppetmaster($master_name = $::fqdn) {
 
   $pkgs = [ 'puppet-common', 'puppetmaster-passenger' ]
 
@@ -34,14 +35,18 @@ class puppetmaster {
     ensure => present,
   }
 
-  # Tested against cprice404/inifile 0.0.3:
-  ini_setting { 'puppetmaster':
-    ensure  => present,
-    path    => '/etc/puppet/puppet.conf',
-    section => 'main',
-    setting => 'server',
-    value   => $fqdn,
-    require => Package['puppet-common'],
+  if ($master_name == '') {
+    fail('Puppetmaster name must be set; is fqdn fact not populated?')
+  } else {
+    # Tested against cprice404/inifile 0.0.3:
+    ini_setting { 'puppetmaster':
+      ensure  => present,
+      path    => '/etc/puppet/puppet.conf',
+      section => 'main',
+      setting => 'server',
+      value   => $master_name,
+      require => Package['puppet-common'],
+    }
   }
 
   # /var/lib/puppet/reports comes from deb root:root, causes Passenger to fail:

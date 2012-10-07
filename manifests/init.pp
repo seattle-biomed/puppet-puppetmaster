@@ -35,6 +35,10 @@ class puppetmaster($master_name = $fqdn) {
     ensure => present,
   }
 
+  if ($master_name == '') {
+    fail('Puppetmaster name must be set; is fqdn fact not populated?')
+  }
+
   # Tested against cprice404/inifile 0.0.3:
   ini_setting { 'puppetmaster':
     ensure  => present,

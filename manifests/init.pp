@@ -37,16 +37,16 @@ class puppetmaster($master_name = $fqdn) {
 
   if ($master_name == '') {
     fail('Puppetmaster name must be set; is fqdn fact not populated?')
-  }
-
-  # Tested against cprice404/inifile 0.0.3:
-  ini_setting { 'puppetmaster':
-    ensure  => present,
-    path    => '/etc/puppet/puppet.conf',
-    section => 'main',
-    setting => 'server',
-    value   => $master_name,
-    require => Package['puppet-common'],
+  } else {
+    # Tested against cprice404/inifile 0.0.3:
+    ini_setting { 'puppetmaster':
+      ensure  => present,
+      path    => '/etc/puppet/puppet.conf',
+      section => 'main',
+      setting => 'server',
+      value   => $master_name,
+      require => Package['puppet-common'],
+    }
   }
 
   # /var/lib/puppet/reports comes from deb root:root, causes Passenger to fail:

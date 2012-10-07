@@ -63,4 +63,11 @@ class puppetmaster {
     target => '/etc/hiera.yaml',
   }
 
+  file { '/etc/hiera':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+  
 }

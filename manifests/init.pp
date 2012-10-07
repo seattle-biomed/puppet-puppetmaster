@@ -27,7 +27,7 @@
 #
 # Copyright Seattle Biomedical Research Institute, 2012
 #
-class puppetmaster($master_name = $fqdn) {
+class puppetmaster($master_name = $::fqdn) {
 
   $pkgs = [ 'puppet-common', 'puppetmaster-passenger' ]
 

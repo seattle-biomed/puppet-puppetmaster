@@ -4,7 +4,8 @@
 #
 # Written with the intent of being run from puppet apply.
 #
-# == Parameters: (none)
+# == Parameters:
+#  - master_name - hostname of puppetmaster, for puppet.conf
 #
 # == Actions:
 #  - Install puppetmaster/mod_passenger packages
@@ -26,7 +27,7 @@
 #
 # Copyright Seattle Biomedical Research Institute, 2012
 #
-class puppetmaster {
+class puppetmaster($master_name = $fqdn) {
 
   $pkgs = [ 'puppet-common', 'puppetmaster-passenger' ]
 
@@ -40,7 +41,7 @@ class puppetmaster {
     path    => '/etc/puppet/puppet.conf',
     section => 'main',
     setting => 'server',
-    value   => $fqdn,
+    value   => $master_name,
     require => Package['puppet-common'],
   }
 

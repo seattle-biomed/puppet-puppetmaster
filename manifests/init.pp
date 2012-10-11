@@ -38,7 +38,7 @@ class puppetmaster($master_name = $::fqdn) {
 
   # Fix puppetmaster/passenger configuration in 3.0.0 - see bug at
   # <http://projects.puppetlabs.com/issues/16769>:
-  file { '/etc/apache2/sites-available':
+  file { '/etc/apache2/sites-available/puppetmaster':
     ensure  => present,
     owner   => 'root',
     group   => 'root',

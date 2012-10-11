@@ -9,6 +9,7 @@
 #
 # == Actions:
 #  - Install puppetmaster/mod_passenger packages
+#  - Fix puppetmaster/passenger configuration
 #  - Configure puppet.conf
 #  - Set reports directory permissions
 #  - Configure hiera
@@ -35,6 +36,17 @@ class puppetmaster($master_name = $::fqdn) {
     ensure => present,
   }
 
+  # Fix puppetmaster/passenger configuration in 3.0.0 - see bug at
+  # <http://projects.puppetlabs.com/issues/16769>:
+  file { '/etc/apache2/sites-available':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    source  => 'puppet:///modules/puppetmaster/puppetmaster',
+    require => Package['puppetmaster-passenger'],
+  }
+
   if ($master_name == '') {
     fail('Puppetmaster name must be set; is fqdn fact not populated?')
   } else {
@@ -55,7 +67,7 @@ class puppetmaster($master_name = $::fqdn) {
     owner   => 'puppet',
     require => Package['puppetmaster-passenger'],
   }
-  
+
   # Configure hiera:
 
   file { '/etc/hiera.yaml':
@@ -74,5 +86,4 @@ class puppetmaster($master_name = $::fqdn) {
     group  => 'root',
     mode   => '0755',
   }
-  
 }

@@ -43,7 +43,7 @@ class puppetmaster($master_name = $::fqdn) {
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    source  => 'puppet:///modules/puppetmaster/puppetmaster',
+    content => template('puppetmaster/puppetmaster.erb'),
     require => Package['puppetmaster-passenger'],
   }
 

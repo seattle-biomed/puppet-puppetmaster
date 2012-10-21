@@ -96,6 +96,13 @@ class puppetmaster(
 
   if $hiera_gpg {
 
+    file { '/etc/hiera-gpg':
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+    
     package { 'ruby-gpgme': ensure => present }
 
     exec { 'download hiera-gpg':

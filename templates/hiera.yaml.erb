@@ -9,7 +9,12 @@
   - nodes/%{fqdn}
   - env/%{environment}
   - global
- 
+
+<if @hiera_gpg -%>
+:gpg:
+  :datadir: '/etc/hiera-gpg'
+
+<% end -%>
 :yaml:
 # datadir is empty here, so hiera uses its defaults
 # When specifying a datadir, make sure the path of the datadir exists

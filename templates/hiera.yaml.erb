@@ -1,6 +1,9 @@
 ---
 :backend:
   - yaml
+<% if @hiera_gpg -%>
+  - gpg
+<% end -%>
 :hierarchy:
   - defaults
   - nodes/%{fqdn}

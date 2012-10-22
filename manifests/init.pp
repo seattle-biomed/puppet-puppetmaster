@@ -5,6 +5,8 @@
 # Written with the intent of being run from puppet apply.
 #
 # == Parameters:
+#  - hiera_gpg - boolean, indicating whether or not to install hiera-gpg
+#  - hiera_gpg_version - version of hiera_gpg to download
 #  - master_name - hostname of puppetmaster, for puppet.conf
 #
 # == Actions:
@@ -13,6 +15,7 @@
 #  - Configure puppet.conf
 #  - Set reports directory permissions
 #  - Configure hiera
+#  - Optionally, install hiera-gpg
 #
 # == Authors:
 #  - Andrew Leonard <andy.leonard@sbri.org>
@@ -28,7 +31,11 @@
 #
 # Copyright Seattle Biomedical Research Institute, 2012
 #
-class puppetmaster($master_name = $::fqdn) {
+class puppetmaster(
+  $hiera_gpg = false,
+  $hiera_gpg_version = 'master', # N.B. 1.0.3 and earlier broken w/hiera 1.0.0
+  $master_name = $::fqdn
+  ) {
 
   $pkgs = [ 'puppet-common', 'puppetmaster-passenger' ]
 
@@ -85,5 +92,25 @@ class puppetmaster($master_name = $::fqdn) {
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
+  }
+
+  if $hiera_gpg {
+
+    file { '/etc/hiera-gpg':
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+    
+    package { 'ruby-gpgme': ensure => present }
+
+    exec { 'download hiera-gpg':
+      command => "/usr/bin/wget https://raw.github.com/crayfishx/hiera-gpg/${hiera_gpg_version}/lib/hiera/backend/gpg_backend.rb",
+      creates => '/usr/lib/ruby/vendor_ruby/hiera/backend/gpg_backend.rb',
+      cwd     => '/usr/lib/ruby/vendor_ruby/hiera/backend/',
+      require => Package['puppetmaster-passenger'], # Pulls in hiera
+    }
+    
   }
 }

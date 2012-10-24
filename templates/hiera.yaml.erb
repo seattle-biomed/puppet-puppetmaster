@@ -10,7 +10,7 @@
   - env/%{environment}
   - global
 
-<if @hiera_gpg -%>
+<% if @hiera_gpg -%>
 :gpg:
   :datadir: '/etc/hiera-gpg'
 

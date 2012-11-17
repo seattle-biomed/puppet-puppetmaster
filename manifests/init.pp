@@ -102,7 +102,7 @@ class puppetmaster(
       group  => 'root',
       mode   => '0755',
     }
-    
+
     package { 'ruby-gpgme': ensure => present }
 
     exec { 'download hiera-gpg':
@@ -111,6 +111,5 @@ class puppetmaster(
       cwd     => '/usr/lib/ruby/vendor_ruby/hiera/backend/',
       require => Package['puppetmaster-passenger'], # Pulls in hiera
     }
-    
   }
 }

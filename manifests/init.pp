@@ -45,13 +45,15 @@ class puppetmaster(
 
   # Fix puppetmaster/passenger configuration in 3.0.0 - see bug at
   # <http://projects.puppetlabs.com/issues/16769>:
-  file { '/etc/apache2/sites-available/puppetmaster':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => template('puppetmaster/puppetmaster.erb'),
-    require => Package['puppetmaster-passenger'],
+  if $::puppetversion == '3.0.0' {
+    file { '/etc/apache2/sites-available/puppetmaster':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('puppetmaster/puppetmaster.erb'),
+      require => Package['puppetmaster-passenger'],
+    }
   }
 
   if ($master_name == '') {
@@ -77,14 +79,14 @@ class puppetmaster(
 
   # Configure hiera:
 
-  file { '/etc/hiera.yaml':
+  file { '/etc/puppet/hiera.yaml':
     ensure  => present,
     content => template('puppetmaster/hiera.yaml.erb'),
   }
 
-  file { '/etc/puppet/hiera.yaml':
+  file { '/etc/hiera.yaml':
     ensure => link,
-    target => '/etc/hiera.yaml',
+    target => '/etc/puppet/hiera.yaml',
   }
 
   file { '/etc/hiera':
@@ -102,7 +104,7 @@ class puppetmaster(
       group  => 'root',
       mode   => '0755',
     }
-    
+
     package { 'ruby-gpgme': ensure => present }
 
     exec { 'download hiera-gpg':
@@ -111,6 +113,5 @@ class puppetmaster(
       cwd     => '/usr/lib/ruby/vendor_ruby/hiera/backend/',
       require => Package['puppetmaster-passenger'], # Pulls in hiera
     }
-    
   }
 }

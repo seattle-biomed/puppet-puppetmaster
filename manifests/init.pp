@@ -79,14 +79,14 @@ class puppetmaster(
 
   # Configure hiera:
 
-  file { '/etc/hiera.yaml':
+  file { '/etc/puppet/hiera.yaml':
     ensure  => present,
     content => template('puppetmaster/hiera.yaml.erb'),
   }
 
-  file { '/etc/puppet/hiera.yaml':
+  file { '/etc/hiera.yaml':
     ensure => link,
-    target => '/etc/hiera.yaml',
+    target => '/etc/puppet/hiera.yaml',
   }
 
   file { '/etc/hiera':

@@ -45,13 +45,15 @@ class puppetmaster(
 
   # Fix puppetmaster/passenger configuration in 3.0.0 - see bug at
   # <http://projects.puppetlabs.com/issues/16769>:
-  file { '/etc/apache2/sites-available/puppetmaster':
-    ensure  => present,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => template('puppetmaster/puppetmaster.erb'),
-    require => Package['puppetmaster-passenger'],
+  if $::puppetversion == '3.0.0' {
+    file { '/etc/apache2/sites-available/puppetmaster':
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('puppetmaster/puppetmaster.erb'),
+      require => Package['puppetmaster-passenger'],
+    }
   }
 
   if ($master_name == '') {

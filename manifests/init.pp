@@ -37,10 +37,39 @@ class puppetmaster(
   $master_name = $::fqdn
   ) {
 
-  $pkgs = [ 'puppet-common', 'puppetmaster-passenger' ]
+  $pkgs = [ 'apache2.2-common', 'puppet-common', 'puppetmaster-passenger' ]
 
   package { $pkgs:
     ensure => present,
+  }
+
+  # Disable default Apache site:
+  file { '/etc/apache2/sites-enabled/000-default':
+    ensure  => absent,
+    notify  => Service['apache2'],
+    require => Package['apache2.2-common'],
+  }
+
+  # Keep apache from listening on port 80:
+  file { '/etc/apache2/apache2.conf':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    source  => 'puppet:///modules/puppetmaster/apache2.conf',
+    notify  => Service['apache2'],
+    require => Package['apache2.2-common'],
+  }
+
+  file { '/etc/apache2/ports.conf':
+    ensure  => absent,
+    notify  => Service['apache2'],
+    require => Package['apache2.2-common'],
+  }
+
+  service { 'apache2':
+    enable  => true,
+    require => Package['apache2.2-common'],
   }
 
   # Fix puppetmaster/passenger configuration in 3.0.0 - see bug at

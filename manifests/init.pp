@@ -33,7 +33,7 @@
 #
 class puppetmaster(
   $hiera_gpg = false,
-  $hiera_gpg_version = 'master', # N.B. 1.0.3 and earlier broken w/hiera 1.0.0
+  $hiera_gpg_version = '1.1.0', # N.B. 1.0.3 and earlier broken w/hiera 1.0.0
   $master_name = $::fqdn
   ) {
 

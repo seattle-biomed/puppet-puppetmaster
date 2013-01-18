@@ -43,6 +43,11 @@ class puppetmaster(
     ensure => present,
   }
 
+  file { '/etc/puppet/files':
+    ensure => directory,
+    require => Package[$pkgs],
+  }
+
   # Disable default Apache site:
   file { '/etc/apache2/sites-enabled/000-default':
     ensure  => absent,

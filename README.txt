@@ -1,7 +1,9 @@
 puppetmaster
 
 A puppet module to bootstrap a puppetmaster; written to be run from
-"puppet apply".
+"puppet apply".  Originally developed against Ubuntu 12.04 and the PuppetLabs
+apt repos; initial support for Canonical's packaging of the Puppetmaster
+courtesy of preflightsiren / puppet-puppetmaster.
 
 Example usage:
 

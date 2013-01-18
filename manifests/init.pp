@@ -2,7 +2,9 @@
 #
 # Bootstrap a puppetmaster/mod_passenger server
 #
-# Written with the intent of being run from puppet apply.
+# Written with the intent of being run from puppet apply.  Originally written
+# and tested on Ubuntu 12.04 with PuppetLabs apt repos configured; preliminary
+# support for Canonical's Puppetmaster deb has been contributed and merged.
 #
 # == Parameters:
 #  - hiera_gpg - boolean, indicating whether or not to install hiera-gpg

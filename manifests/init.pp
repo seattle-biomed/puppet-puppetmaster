@@ -44,7 +44,7 @@ class puppetmaster(
   }
 
   file { '/etc/puppet/files':
-    ensure => directory,
+    ensure  => directory,
     require => Package[$pkgs],
   }
 
